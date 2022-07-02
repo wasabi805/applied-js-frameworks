@@ -1,5 +1,7 @@
-let wrapperStyle = '', buttonStyle=''
-wrapperStyle = "list-style: none; color: white; margin-bottom: 2rem; display: block; text-align: left"
+let listWrapperStyle='',lisItemStyle = '', buttonStyle=''
+
+listWrapperStyle = 'relative block h-60 w-72 m-2 p-4 text-center bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700'
+lisItemStyle = "list-style: none; color: white; display: block; text-align: left;"
 buttonStyle= "px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
 
 function capitalize(str) {
@@ -23,6 +25,8 @@ function ListItem(item, style) {
 
 function OrderedList() { 
   this.orderedList = document.createElement("ol");
+  this.orderedList.className = 'mb-12'
+
   this.create = ()=>{
     return this.orderedList
   }
@@ -54,9 +58,10 @@ function Button(id, text, className) {
 function Wrapper(items) {
   
   const wrapper = document.createElement('div')
-  wrapper.className= 'user-input'
+  wrapper.className= `user-input ${listWrapperStyle}`
 
   const ol = new OrderedList().create()
+
 
   const displayedUsers = document.getElementById('displayUsers')
   let id = displayedUsers.getElementsByClassName('user-input').length
@@ -65,8 +70,8 @@ function Wrapper(items) {
   let deleteButton = new Button(id, 'Delete', buttonStyle).create()
  
   Object.entries(items).forEach((item) => {
-    const li = new ListItem(item , wrapperStyle).create();
-    li.innerText = `${item[0]} : ${item[1]}`;
+    const li = new ListItem(item , lisItemStyle).create();
+    li.innerText = `${capitalize(item[0])} : ${item[1]}`;
     ol.appendChild(li);
   });
 
