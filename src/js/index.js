@@ -1,6 +1,4 @@
-let wrapperStyle = '', buttonStyle=''
-wrapperStyle = "list-style: none; color: white; margin-bottom: 2rem; display: block; text-align: left"
-buttonStyle= "px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
+
 
 function capitalize(str) {
   if (str.includes("_")) {
@@ -13,83 +11,48 @@ function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function ListItem(item, style) {
-  const listItem = document.createElement("li");
-  this.style = style
-
-  listItem.style.cssText = this.style
-  this.create = () => listItem;
-}
-
-function OrderedList() { 
-  this.orderedList = document.createElement("ol");
-  this.create = ()=>{
-    return this.orderedList
-  }
-}
-
-function Button(id, text, className) {
-  const deleteButton = document.createElement("button");
-
-  this.id = id;
-  this.innerText = text;
-  this.className = className
-
-  deleteButton.id = this.id;
-  deleteButton.innerText = this.innerText;
-  deleteButton.className = this.className;
-
-  deleteButton.addEventListener('click',(e)=>{
-    const buttonId = e.target.id
-    const displayedUsers = document.getElementById('displayUsers')
-    const userToRemove = document.getElementById(`user-${buttonId}`)
-
-    displayedUsers.removeChild(userToRemove)
-  
-  })
-
-  this.create = () => deleteButton;
-}
-
-function Wrapper(items) {
-  
-  const wrapper = document.createElement('div')
-  wrapper.className= 'user-input'
-
-  const ol = new OrderedList().create()
-
-  const displayedUsers = document.getElementById('displayUsers')
-  let id = displayedUsers.getElementsByClassName('user-input').length
-  wrapper.id=`user-${id}`
-
-  let deleteButton = new Button(id, 'Delete', buttonStyle).create()
- 
-  Object.entries(items).forEach((item) => {
-    const li = new ListItem(item , wrapperStyle).create();
-    li.innerText = `${item[0]} : ${item[1]}`;
-    ol.appendChild(li);
-  });
-
-  wrapper.appendChild(ol)
-  wrapper.appendChild(deleteButton)
-
-  this.create = ()=> wrapper
-}
-
-function UserList() {}
-
-UserList.prototype.createList = function (items) {
-
-  const listWrapper = new Wrapper(items).create();
+function buildUsersList(users) {
   const displayedUsers = document.getElementById("displayUsers");
 
-  displayedUsers.appendChild(listWrapper);
-};
+  let text;
+  const listWrapper = document.createElement("div");
+  listWrapper.id = `user_${displayedUsers.childNodes.length}`;
+  listWrapper.className =
+    "block max-w-sm h-56 text-center bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700";
+  listWrapper.style.cssText =
+    "margin: 2rem; min-width: 14rem; max-width: 14rem; padding: 1em";
 
-const List = new UserList(); //instantiate new list so we can use createList
+  const deleteButton = document.createElement("button");
+  deleteButton.id = `user_${displayedUsers.childNodes.length}`;
+  deleteButton.innerHTML = "Delete";
 
-function buildUsersList(users) {
-  List.createList(users);
+  deleteButton.onclick = (e) => {
+    const deleteUser = document.getElementById(e.target.id);
+    deleteUser.remove();
+  };
+
+  deleteButton.className =
+    "px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2";
+
+  const list = document.createElement("o");
+  list.style.cssText =
+    "list-style: none; margin-bottom: 2rem; display: block; text-align: left;";
+
+  /* Turn Object into ordered list */
+  Object.entries(users).forEach((item) => {
+    const listItem = document.createElement("li");
+    listItem.style.cssText = "color: white;";
+
+    text = document.createTextNode(`${capitalize(item[0])} : ${item[1]}`);
+
+    listItem.append(text);
+
+    list.appendChild(listItem);
+  });
+
+  listWrapper.appendChild(list);
+  listWrapper.append(deleteButton);
+  document.getElementById("displayUsers").appendChild(listWrapper);
 }
 
 function handleSubmit() {
