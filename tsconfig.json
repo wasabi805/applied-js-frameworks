@@ -1,12 +1,11 @@
 {
-    "compilerOptions": {
-      "module": "commonjs",
-      "sourceMap": true,
-      "outDir" : "dist",
-      "lib": ["es2015","es2017", "es2017.object", "dom"]
-    },
+  "compilerOptions": {
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "dist",
+    "lib": ["es2015", "es2017.object", "dom"]
+  },
 
-    "include" : ["src/**/*"],
-    "exclude": ["node_modules", "**/*.spec.ts"]
-    
-  }
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

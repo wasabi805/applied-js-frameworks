@@ -1,5 +1,3 @@
-
-
 function capitalize(str: string) {
   if (str.includes("_")) {
     const newStr = str.split("_");
@@ -11,16 +9,17 @@ function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-
-interface Ievent{
-  target:{
-    id: number | string
-  }
+interface Iusers {
+  first_name?: string;
+  last_name?: string;
+  city?: string;
+  state?: string;
+  zip_code?: string;
 }
-function buildUsersList(users) {
+function buildUsersList(users: Iusers) {
   const displayedUsers = document.getElementById("displayUsers");
 
-  let text: string;
+  let text: Node;
   const listWrapper = document.createElement("div");
   listWrapper.id = `user_${displayedUsers.childNodes.length}`;
   listWrapper.className =
@@ -28,12 +27,14 @@ function buildUsersList(users) {
   listWrapper.style.cssText =
     "margin: 2rem; min-width: 14rem; max-width: 14rem; padding: 1em";
 
-  const deleteButton = document.createElement("button");
+  const deleteButton: HTMLButtonElement = document.createElement("button");
   deleteButton.id = `user_${displayedUsers.childNodes.length}`;
   deleteButton.innerHTML = "Delete";
 
-  deleteButton.onclick = (e: any) => {
-    const deleteUser = document.getElementById(e.target.id);
+  deleteButton.onclick = (e: MouseEvent) => {
+    const {id} = e.target as HTMLButtonElement //https://stackoverflow.com/a/55389799/7857134
+    
+    const deleteUser = document.getElementById(id);
     deleteUser.remove();
   };
 
@@ -45,7 +46,7 @@ function buildUsersList(users) {
     "list-style: none; margin-bottom: 2rem; display: block; text-align: left;";
 
   /* Turn Object into ordered list */
-  Object.entries(users).forEach((item) => {
+  Object.entries(users).forEach((item: string[]) => {
     const listItem = document.createElement("li");
     listItem.style.cssText = "color: white;";
 
@@ -61,20 +62,23 @@ function buildUsersList(users) {
   document.getElementById("displayUsers").appendChild(listWrapper);
 }
 
+
+interface Iinput{
+  value: string
+}
 function handleSubmit() {
   const userForm = document.getElementById("userForm");
-  const newUser = {};
+  const newUser: Iusers = {};
 
   for (var i = 0; i < Object.entries(userForm).length; i++) {
-    const key = userForm[i].name;
-    const val = userForm[i].value;
-    console.log(key, '&&&&&&')
+    const key: string = userForm[i].name;
+    const val: string = userForm[i].value;
     newUser[key] = val;
   }
 
   buildUsersList(newUser);
 
-  Object.values(userForm).forEach((input) => {
+  Object.values(userForm).forEach((input: Iinput) => {
     input.value = "";
   });
 }

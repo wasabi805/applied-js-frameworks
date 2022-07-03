@@ -6,7 +6,8 @@
   "scripts": {
     "build-css": "tailwindcss build src/style/input.css -o dist/output.css",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "npx prettier --write . "
+    "format": "npx prettier --write . ",
+    "typescript": "tsc"
   },
   "author": "",
   "license": "ISC",
